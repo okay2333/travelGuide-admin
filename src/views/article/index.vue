@@ -22,14 +22,14 @@ const columns = [
     key: 'content'
   },
   {
-    title: '作者',
-    dataIndex: 'author',
-    key: 'author'
-  },
-  {
     title: '创建时间',
     dataIndex: 'createTime',
     key: 'createTime'
+  },
+  {
+    title: '更新时间',
+    dataIndex: 'updateTime',
+    key: 'updateTime'
   },
   {
     title: '操作',
@@ -107,8 +107,8 @@ const confirmDel = async (articleId: number) => {
           <template v-if="column.key === 'createTime'">
             <span>{{ new Date(record.createTime).toLocaleString() }}</span>
           </template>
-          <template v-if="column.key === 'author'">
-            <span>{{ record.author }}</span>
+          <template v-if="column.key === 'updateTime'">
+            <span>{{ new Date(record.updateTime).toLocaleString() }}</span>
           </template>
           <template v-else-if="column.key === 'action'">
             <span>

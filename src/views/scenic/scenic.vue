@@ -79,7 +79,6 @@ const init = async () => {
 }
 
 const onSearchScenic = async () => {
-  console.log('queryParams.value', queryParams.value)
   const res = await listScenicVOByPage(queryParams.value)
   ScenicForm.value = res.records
 }
@@ -163,9 +162,15 @@ onMounted(() => {
 })
 // 图片上传
 const handleChange = (info: any) => {
+  console.log('这是多少@@', info)
   if (info.file.status === 'done') {
+    console.log('这是多少', info.fileList)
+    // 遍历info.fileList的所有值，将每个值的response.data存入userInfo.value.userAvatar
+    // 遍历 info.fileList 的所有值，将每个值的 response.data 存入 scenicDetail.value.carouselImagesList
     // userInfo.value.userAvatar = info.fileList[0].response.data
+    scenicDetail.value.carouselImagesList = info.fileList.map((item: any) => item.response.data)
     message.success(`${info.file.name} 文件上传成功`)
+    console.log('这是多少carouselImagesList', scenicDetail.value.carouselImagesList)
   } else if (info.file.status === 'error') {
     message.error(`${info.file.name} 文件上传失败`)
   }
