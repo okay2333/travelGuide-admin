@@ -21,17 +21,20 @@ export const constantRoutes = [
         component: () => import('@/views/dashboard/index.vue'),
         name: 'Dashboard',
         meta: {
-          icon: 'HomeOutlined',
-          title: '首页'
+          icon: 'DashboardOutlined',
+          title: '控制台'
         }
       }
     ]
-  }, {
+  },
+  // 1. 用户管理
+  {
     path: '/user',
     component: () => import('@/layout/index.vue'),
     name: 'user',
     meta: {
       isAuto: true,
+      sort: 1
     },
     children: [
       {
@@ -47,7 +50,7 @@ export const constantRoutes = [
         path: 'detail/:id',
         component: () => import('@/views/user/detail.vue'),
         name: 'userDetail',
-        hidden: true, // 表示隐藏在左侧菜单
+        hidden: true,
         meta: {
           icon: 'UserOutlined',
           title: '用户详情'
@@ -55,53 +58,45 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/post',
-    component: () => import('@/layout/index.vue'),
-    name: 'post',
-    meta: {
-      isAuto: true,
-    },
-    children: [
-      {
-        path: '',
-        component: () => import('@/views/post/index.vue'),
-        name: 'post',
-        meta: {
-          icon: 'UserOutlined',
-          title: '文章管理'
-        }
-      },
-    ]
-  },
+  // 2. 景区管理（包含子菜单）
   {
     path: '/scenic',
     component: () => import('@/layout/index.vue'),
     name: 'scenic',
     meta: {
       isAuto: true,
+      sort: 2
     },
     children: [
       {
         path: '',
         name: 'scenic',
         meta: {
-          icon: 'UserOutlined',
+          icon: 'EnvironmentOutlined',
           title: '景区管理'
         },
         children: [
           {
+            path: 'scenic',
+            component: () => import('@/views/scenic/scenic.vue'),
+            meta: {
+              icon: 'PictureOutlined',
+              title: '景点管理'
+            }
+          },
+          {
             path: 'ticket',
             component: () => import('@/views/scenic/ticket.vue'),
             meta: {
-              icon: 'UserOutlined',
+              icon: 'TagsOutlined',
               title: '门票管理'
             },
-          }, {
+          },
+          {
             path: 'reservation',
             component: () => import('@/views/scenic/reservation.vue'),
             meta: {
-              icon: 'UserOutlined',
+              icon: 'ScheduleOutlined',
               title: '预约管理'
             },
           }
@@ -109,12 +104,14 @@ export const constantRoutes = [
       },
     ]
   },
+  // 3. 订单管理
   {
     path: '/order',
     component: () => import('@/layout/index.vue'),
     name: 'order',
     meta: {
       isAuto: true,
+      sort: 3
     },
     children: [
       {
@@ -122,13 +119,72 @@ export const constantRoutes = [
         component: () => import('@/views/order/index.vue'),
         name: 'order',
         meta: {
-          icon: 'UserOutlined',
+          icon: 'ShoppingCartOutlined',
           title: '订单管理'
         }
       },
     ]
+  },
+  // 4. 文章管理
+  {
+    path: '/post',
+    component: () => import('@/layout/index.vue'),
+    name: 'post',
+    meta: {
+      isAuto: true,
+      sort: 4
+    },
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/post/index.vue'),
+        name: 'post',
+        meta: {
+          icon: 'FileTextOutlined',
+          title: '文章管理'
+        }
+      },
+    ]
+  },
+  // 5. VR导览
+  {
+    path: '/vrtour',
+    component: () => import('@/layout/index.vue'),
+    name: 'vrtour',
+    meta: {
+      isAuto: true,
+      sort: 5
+    },
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/vrtour/index.vue'),
+        meta: {
+          icon: 'EyeOutlined',
+          title: 'VR导览'
+        }
+      }
+    ]
+  },
+  {
+    path: '/feedback',
+    component: () => import('@/layout/index.vue'),
+    name: 'feedback',
+    meta: {
+      isAuto: true,
+    },
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/feedback/index.vue'),
+        name: 'FeedbackManagement',
+        meta: {
+          icon: 'MessageOutlined',
+          title: '问题反馈'
+        }
+      }
+    ]
   }
-
 ]
 
 const privateRoutes = [
@@ -140,7 +196,7 @@ const privateRoutes = [
         path: '/user',
         component: () => import('@/views/user/index.vue'),
         meta: {
-          title: 'user',
+          title: '用户管理',
           icon: 'UserOutlined'
         }
       },
@@ -148,7 +204,7 @@ const privateRoutes = [
         path: '/user/detail/:id',
         component: () => import('@/views/user/detail.vue'),
         meta: {
-          title: 'detail',
+          title: '用户详情',
         }
       }
     ]
@@ -161,8 +217,8 @@ const privateRoutes = [
         path: '/post',
         component: () => import('@/views/post/index.vue'),
         meta: {
-          title: 'post',
-          icon: 'UserOutlined'
+          title: '文章管理',
+          icon: 'FileTextOutlined'
         }
       }
     ]
@@ -174,8 +230,8 @@ const privateRoutes = [
         path: '/order',
         component: () => import('@/views/order/index.vue'),
         meta: {
-          title: 'order',
-          icon: 'UserOutlined'
+          title: '订单管理',
+          icon: 'ShoppingCartOutlined'
         }
       }
     ]
@@ -188,8 +244,8 @@ const privateRoutes = [
       path: '/vrtour',
       component: () => import('@/views/vrtour/index.vue'),
       meta: {
-        title: 'vrtour',
-        icon: 'UserOutlined'
+        title: 'VR导览',
+        icon: 'EyeOutlined'
       }
     }
   ]
@@ -202,8 +258,8 @@ const privateRoutes = [
         path: '/test',
         component: () => import('@/views/test/index.vue'),
         meta: {
-          title: 'test',
-          icon: 'UserOutlined'
+          title: '测试页面',
+          icon: 'BugOutlined'
         }
       }
     ]
@@ -211,37 +267,39 @@ const privateRoutes = [
     path: '/scenic',
     component: () => import('@/layout/index.vue'),
     meta: {
-      title: 'scenic',
-      icon: 'UserOutlined'
+      title: '景区管理',
+      icon: 'EnvironmentOutlined'
     },
     children: [
       {
         path: '/scenic/ticket',
         component: () => import('@/views/scenic/ticket.vue'),
         meta: {
-          title: 'ticket',
-          icon: 'UserOutlined'
+          title: '门票管理',
+          icon: 'TagsOutlined'
         }
       },
       {
         path: '/scenic/reservation',
         component: () => import('@/views/scenic/reservation.vue'),
         meta: {
-          title: 'reservation',
-          icon: 'UserOutlined'
+          title: '预约管理',
+          icon: 'ScheduleOutlined'
         }
       },
       {
         path: '/scenic/reservation/add',
         component: () => import('@/views/scenic/reservation/add.vue'),
-    
+        meta: {
+          title: '添加预约'
+        }
       },
       {
         path: '/scenic/scenic',
         component: () => import('@/views/scenic/scenic.vue'),
         meta: {
-          title: 'scenic',
-          icon: 'UserOutlined'
+          title: '景点管理',
+          icon: 'PictureOutlined'
         }
       }
     ]
@@ -255,18 +313,38 @@ const privateRoutes = [
         component: () => import('@/views/article/index.vue'),
         name: 'article',
         meta: {
-          icon: 'UserOutlined',
-          title: 'article'
+          icon: 'FileTextOutlined',
+          title: '文章管理'
         }
       },
       {
         path: '/article/add',
         component: () => import('@/views/article/add.vue'),
+        meta: {
+          title: '添加文章'
+        }
       },
       {
         path: '/article/edit/:id',
         component: () => import('@/views/article/edit.vue'),
+        meta: {
+          title: '编辑文章'
+        }
       },
+    ]
+  },
+  {
+    path: '/',
+    component: () => import('@/layout/index.vue'),
+    children: [
+      {
+        path: '/feedback',
+        component: () => import('@/views/feedback/index.vue'),
+        meta: {
+          title: '问题反馈',
+          icon: 'MessageOutlined'
+        }
+      }
     ]
   }
 ]
@@ -289,8 +367,8 @@ const publicRoutes = [
         name: 'dashboard',
         component: () => import('@/views/dashboard/index.vue'),
         meta: {
-          title: 'dashboard',
-          icon: 'role'
+          title: '控制台',
+          icon: 'DashboardOutlined'
         }
       }
     ]
@@ -305,3 +383,4 @@ const router = createRouter({
 
 
 export default router
+

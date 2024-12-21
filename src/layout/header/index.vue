@@ -13,10 +13,10 @@ import userInfo from '@/layout/header/components/userInfo.vue'
     </div>
 
     <div class="right-container">
-      <headerSearch />
-      <fullScreen class="hover-effect" />
-      <changTheme />
-      <langSelect class="hover-effect" />
+      <!-- <headerSearch /> -->
+      <fullScreen />
+      <!-- <changTheme /> -->
+      <!-- <langSelect class="hover-effect" /> -->
       <userInfo />
     </div>
   </a-flex>
@@ -24,7 +24,7 @@ import userInfo from '@/layout/header/components/userInfo.vue'
 
 <style scoped lang="scss">
 .right-container {
-  width: 300px;
+  width: 150px;
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -11,6 +11,7 @@ import { listScenicVOByPage } from '@/api/scenic'
 import { buildTreeData } from '@/utils'
 import { message } from 'ant-design-vue'
 import moment from 'moment'
+import { PlusOutlined, DownloadOutlined, UploadOutlined } from '@ant-design/icons-vue'
 
 // 表格结构
 const columns = [
@@ -174,33 +175,53 @@ const handleDateChange = (date: any) => {
 
 <template>
   <div class="container">
-    <div class="left">
-      <div class="search">
-        <a-input-search placeholder="输入景区名称全局搜索" enter-button />
+    <!-- 左侧树形结构 -->
+    <div class="left-panel">
+      <div class="search-box">
+        <a-input-search placeholder="输入景区名称搜索" enter-button allowClear />
       </div>
       <!-- 左树结构 -->
-      <div class="tree">
+      <div class="tree-container">
         <a-tree
           :tree-data="treeData"
           ref="deptTree"
           @select="selectNode"
           :defaultExpandAll="true"
           v-if="treeData.length"
+          class="custom-tree"
         >
         </a-tree>
       </div>
     </div>
-    <div class="right">
-      <div class="right_button">
+
+    <!-- 右侧内容区 -->
+    <div class="right-panel">
+      <div class="action-bar">
         <a-flex gap="small" justify="flex-end">
-          <a-button type="primary" @click="showModal">添加预约</a-button>
-          <a-button>Excel导出</a-button>
-          <a-button type="dashed">Excel导入</a-button>
+          <a-button type="primary" @click="showModal">
+            <template #icon><PlusOutlined /></template>
+            添加预约
+          </a-button>
+          <a-button>
+            <template #icon><DownloadOutlined /></template>
+            Excel导出
+          </a-button>
+          <a-button type="dashed">
+            <template #icon><UploadOutlined /></template>
+            Excel导入
+          </a-button>
         </a-flex>
       </div>
-      <!-- 右表结构 -->
-      <div>
-        <a-table :columns="columns" :data-source="ReservationDataForm" :pagination="false">
+
+      <!-- 表格区域 -->
+      <div class="table-container">
+        <a-table
+          :columns="columns"
+          :data-source="ReservationDataForm"
+          :pagination="false"
+          :bordered="true"
+          size="middle"
+        >
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'scenicName'">
               <span>{{ record.scenicVO.scenicName }}</span>
@@ -239,14 +260,19 @@ const handleDateChange = (date: any) => {
             </template>
           </template>
         </a-table>
-        <a-pagination
-          :current="current"
-          :pageSize="pageSize"
-          :total="total"
-          @change="handlePageChange"
-          :show-total="(total: any) => `共 ${total} 条`"
-          style="float: right; margin: 5px 0"
-        />
+
+        <!-- 分页器 -->
+        <div class="pagination-wrapper">
+          <a-pagination
+            :current="current"
+            :pageSize="pageSize"
+            :total="total"
+            @change="handlePageChange"
+            :show-total="(total: any) => `共 ${total} 条`"
+            show-quick-jumper
+            show-size-changer
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -299,19 +325,111 @@ const handleDateChange = (date: any) => {
 
 <style lang="scss" scoped>
 .container {
-  padding: 10px;
+  padding: 16px;
   min-height: calc(100vh - 65px);
   display: flex;
-  .left {
+  gap: 16px;
+  background-color: #f0f2f5;
+
+  .left-panel {
     width: 280px;
-    .search {
-      margin: 5px 0;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+
+    .search-box {
+      padding: 16px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .tree-container {
+      padding: 16px;
+      height: calc(100vh - 180px);
+      overflow-y: auto;
+
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        border-radius: 3px;
+      }
+
+      .custom-tree {
+        :deep(.ant-tree-node-content-wrapper) {
+          &:hover {
+            background-color: #f5f5f5;
+          }
+        }
+
+        :deep(.ant-tree-node-selected) {
+          background-color: #e6f7ff;
+        }
+      }
     }
   }
-  .right {
+
+  .right-panel {
     flex: 1;
-    .right_button {
-      margin: 5px;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+
+    .action-bar {
+      padding: 16px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .table-container {
+      padding: 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
+      :deep(.ant-table-wrapper) {
+        flex: 1;
+
+        .ant-table {
+          border-radius: 4px;
+        }
+
+        .ant-table-thead > tr > th {
+          background: #fafafa;
+        }
+      }
+
+      .pagination-wrapper {
+        margin-top: 16px;
+        display: flex;
+        justify-content: flex-end;
+        padding: 8px 0;
+      }
+    }
+  }
+}
+
+// 弹窗样式优化
+:deep(.ant-modal) {
+  .ant-modal-content {
+    padding: 0;
+
+    .ant-modal-header {
+      margin-bottom: 0;
+      padding: 16px 24px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .ant-modal-body {
+      padding: 24px;
+    }
+
+    .ant-modal-footer {
+      margin-top: 0;
+      padding: 16px 24px;
+      border-top: 1px solid #f0f0f0;
     }
   }
 }
